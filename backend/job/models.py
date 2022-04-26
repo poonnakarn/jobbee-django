@@ -2,6 +2,8 @@ from datetime import *
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as gismodels
+import geocoder
+import os
 from django.contrib.gis.geos import Point
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -73,3 +75,14 @@ class Job(models.Model):
     lastDate = models.DateTimeField(default=return_date_time)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *arg, **kwargs):
+        g = geocoder.mapquest(self.address, key=os.environ.get("GEOCODER_API"))
+
+        print(g)
+
+        lng = g.lng
+        lat = g.lat
+
+        self.point = Point(lng, lat)
+        super(Job, self).save(*arg, **kwargs)
