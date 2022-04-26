@@ -6,4 +6,5 @@ urlpatterns = [
     path("jobs/<int:pk>", views.getJob, name="job"),
     path("jobs/new/", views.newJob, name="new_job"),
     path("jobs/<int:pk>/update/", views.updateJob, name="update_job"),
+    path("jobs/<int:pk>/delete/", views.deleteJob, name="delete_job"),
 ]
