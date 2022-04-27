@@ -49,7 +49,7 @@ def current_user(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_user(request):
-    user = request.user
+    user = request.userfsdf
 
     data = request.data
 
