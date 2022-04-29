@@ -9,4 +9,9 @@ urlpatterns = [
     path("jobs/<int:pk>/delete/", views.deleteJob, name="delete_job"),
     path("stats/<str:topic>/", views.getTopicStats, name="get_topic_stats"),
     path("jobs/<int:pk>/apply/", views.apply_job, name="apply_job"),
+    path(
+        "me/jobs/applied/",
+        views.get_current_user_applied_jobs,
+        name="get_current_user_applied_jobs",
+    ),
 ]

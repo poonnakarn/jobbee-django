@@ -15,4 +15,4 @@ class CandidatesAppliedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CandidatesApplied
-        field = ("user", "resume", "appliedAt", "job")
+        fields = ("user", "resume", "appliedAt", "job")
