@@ -49,7 +49,7 @@ def current_user(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def update_user(request):
-    user = request.userfsdf
+    user = request.user
 
     data = request.data
 
@@ -64,4 +64,21 @@ def update_user(request):
     user.save()
 
     serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def upload_resume(request):
+
+    user = request.user
+    resume = request.FILES["resume"]
+
+    if resume == "":
+        return Response({"error": "Please upload your resume."})
+
+    user.userprofile.resume = resume
+    user.userprofile.save()
+    serializer = UserSerializer(user, many=False)
+
     return Response(serializer.data)
