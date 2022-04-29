@@ -86,3 +86,8 @@ class Job(models.Model):
 
         self.point = Point(lng, lat)
         super(Job, self).save(*arg, **kwargs)
+
+
+class CandidatesApplied(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
