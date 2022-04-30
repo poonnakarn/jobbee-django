@@ -14,4 +14,5 @@ urlpatterns = [
         views.get_current_user_applied_jobs,
         name="get_current_user_applied_jobs",
     ),
+    path("jobs/<int:pk>/check/", views.is_applied, name="is_applied"),
 ]
