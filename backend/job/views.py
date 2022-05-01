@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 
 
 @api_view(["GET"])
-def getAllJobs(request):
+def get_all_jobs(request):
 
     # jobs = Job.objects.all()
     filterset = JobsFilter(request.GET, queryset=Job.objects.all().order_by("id"))
@@ -40,7 +40,7 @@ def getAllJobs(request):
 
 
 @api_view(["GET"])
-def getJob(request, pk):
+def get_job(request, pk):
     job = get_object_or_404(Job, id=pk)
 
     serializer = JobSerializer(job, many=False)
@@ -49,7 +49,7 @@ def getJob(request, pk):
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-def newJob(request):
+def new_job(request):
     request.data["user"] = request.user
     data = request.data
 
@@ -61,7 +61,7 @@ def newJob(request):
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
-def updateJob(request, pk):
+def update_job(request, pk):
     job = get_object_or_404(Job, id=pk)
 
     if job.user != request.user:
@@ -90,7 +90,7 @@ def updateJob(request, pk):
 
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
-def deleteJob(request, pk):
+def delete_job(request, pk):
     job = get_object_or_404(Job, id=pk)
 
     if job.user != request.user:
@@ -104,7 +104,7 @@ def deleteJob(request, pk):
 
 
 @api_view(["GET"])
-def getTopicStats(request, topic):
+def get_topic_stats(request, topic):
     args = {"title__icontains": topic}
     jobs = Job.objects.filter(**args)
 
@@ -181,3 +181,16 @@ def is_applied(request, pk):
     applied = job.candidatesapplied_set.filter(user=user).exists()
 
     return Response(applied)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_current_user_jobs(request):
+
+    # args = {"user": request.user}
+    user = request.user
+
+    jobs = Job.objects.filter(user=user.id)
+    serializer = JobSerializer(jobs, many=True)
+
+    return Response(serializer.data)
