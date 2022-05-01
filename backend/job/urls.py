@@ -16,4 +16,9 @@ urlpatterns = [
     ),
     path("jobs/<int:pk>/check/", views.is_applied, name="is_applied"),
     path("me/jobs/", views.get_current_user_jobs, name="get_current_user_jobs"),
+    path(
+        "job/<int:pk>/candidates/",
+        views.get_candidates_applied,
+        name="get_candidates_applied",
+    ),
 ]

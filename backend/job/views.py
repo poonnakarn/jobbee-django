@@ -153,7 +153,8 @@ def apply_job(request, pk):
     )
 
     return Response(
-        {"applied": True, "job_id": jobApplied.id}, status=status.HTTP_200_OK
+        {"applied": True, "candidatesapplied_id": jobApplied.id},
+        status=status.HTTP_200_OK,
     )
 
 
@@ -192,5 +193,23 @@ def get_current_user_jobs(request):
 
     jobs = Job.objects.filter(user=user.id)
     serializer = JobSerializer(jobs, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_candidates_applied(request, pk):
+    user = request.user
+    job = get_object_or_404(Job, id=pk)
+
+    if job.user != user:
+        return Response(
+            {"error": "You cannot access this job."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    candidates = job.candidatesapplied_set.all()
+    serializer = CandidatesAppliedSerializer(candidates, many=True)
 
     return Response(serializer.data)
