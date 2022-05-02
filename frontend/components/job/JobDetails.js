@@ -1,6 +1,28 @@
 import moment from 'moment'
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
+import { useEffect } from 'react'
+
+mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
 
 const JobDetails = ({ job, candidates }) => {
+  useEffect(() => {
+    getMap()
+  }, [])
+
+  const getMap = async () => {
+    const coordinates = job.point.split('(')[1].replace(')', '').split(' ')
+
+    const map = new mapboxgl.Map({
+      container: 'job-map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: coordinates,
+      zoom: 10.5,
+    })
+
+    // Add marker on map
+    new mapboxgl.Marker().setLngLat(coordinates).addTo(map)
+  }
+
   return (
     <div className='job-details-wrapper'>
       <div className='container container-fluid'>
@@ -80,6 +102,7 @@ const JobDetails = ({ job, candidates }) => {
 
               <div className='job-location'>
                 <h4 className='mt-5 mb-4'>Job Location</h4>
+                <div id='job-map' style={{ height: 520, width: '100%' }} />
               </div>
             </div>
           </div>
