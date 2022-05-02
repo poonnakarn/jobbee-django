@@ -4,11 +4,11 @@ import Script from 'next/script'
 import Header from './Header'
 import Footer from './Footer'
 
-const Layout = ({ children, title = 'Jobbee - Find your Job Now' }) => {
+const Layout = ({ children, title = 'Find your Job Now' }) => {
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <title>{title} - Jobee</title>
       </Head>
       <Script
         strategy='beforeInteractive'
