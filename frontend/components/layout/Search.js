@@ -15,7 +15,7 @@ function Search() {
     // console.log(keyword, location)
     if (keyword) {
       let searchQuery = `/?keyword=${keyword}`
-      if (location) searchQuery = searchQuery.concat(`?location=${location}`)
+      if (location) searchQuery = searchQuery.concat(`&location=${location}`)
 
       router.push(searchQuery)
     } else {
