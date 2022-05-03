@@ -171,8 +171,8 @@ const Filters = () => {
           type='checkbox'
           name='experience'
           id='check8'
-          value='1 Years'
-          defaultChecked={checkHandler('experience', '1 Years')}
+          value='1 Year'
+          defaultChecked={checkHandler('experience', '1 Year')}
           onClick={(e) => handleClick(e.target)}
         />
         <label className='form-check-label' htmlFor='check8'>
@@ -201,8 +201,8 @@ const Filters = () => {
           type='checkbox'
           name='experience'
           id='check10'
-          value='3 Years above'
-          defaultChecked={checkHandler('experience', '3 Years above')}
+          value='3 Years or above'
+          defaultChecked={checkHandler('experience', '3 Years or above')}
           onClick={(e) => handleClick(e.target)}
         />
         <label className='form-check-label' htmlFor='check10'>
