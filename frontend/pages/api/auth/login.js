@@ -19,6 +19,7 @@ export default async (req, res) => {
         }
       )
 
+      // Set 'access' cookie from backend to browser
       if (response.data.access) {
         res.setHeader('Set-Cookie', [
           cookie.serialize('access', response.data.access, {

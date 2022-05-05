@@ -12,6 +12,13 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter()
 
+  useEffect(() => {
+    if (!user) {
+      loadUser()
+    }
+  }, [user])
+
+  // Login User
   const login = async ({ username, password }) => {
     try {
       setLoading(true)
@@ -23,11 +30,35 @@ export const AuthProvider = ({ children }) => {
 
       if (res.data.success) {
         setIsAuthenticated(true)
+        loadUser()
         setLoading(false)
         router.push('/')
       }
     } catch (error) {
       setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
+  // Load User
+  const loadUser = async () => {
+    try {
+      setLoading(true)
+
+      const res = await axios.get('/api/auth/user')
+
+      if (res.data.user) {
+        setIsAuthenticated(true)
+        setLoading(false)
+        setUser(res.data.user)
+      }
+    } catch (error) {
+      setLoading(false)
+      setIsAuthenticated(false)
+      setUser(null)
       setError(
         error.response &&
           (error.response.data.detail || error.response.data.error)
