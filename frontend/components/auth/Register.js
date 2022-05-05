@@ -1,22 +1,22 @@
-import { useState, useContext, useEffect } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
-import AuthContext from '../../context/AuthContext'
 import { toast } from 'react-toastify'
+import AuthContext from '../../context/AuthContext'
 
-const Login = () => {
+const Register = () => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setlastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { loading, error, isAuthenticated, login, setError, clearError } =
+  const { loading, error, isAuthenticated, register, clearError } =
     useContext(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
     if (error) {
-      // console.log(error)
       toast.error(error)
       clearError()
     }
@@ -28,7 +28,7 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    login({ username: email, password })
+    register({ firstName, lastName, email, password })
   }
 
   return (
@@ -36,16 +36,38 @@ const Login = () => {
       <div className='modalWrapper'>
         <div className='left'>
           <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-            <Image src='/images/login.svg' alt='login' layout='fill' />
+            <Image src='/images/signup.svg' alt='register' layout='fill' />
           </div>
         </div>
         <div className='right'>
           <div className='rightContentWrapper'>
             <div className='headerWrapper'>
-              <h2> LOGIN</h2>
+              <h2> SIGN UP</h2>
             </div>
             <form className='form' onSubmit={submitHandler}>
               <div className='inputWrapper'>
+                <div className='inputBox'>
+                  <i aria-hidden className='fas fa-user'></i>
+                  <input
+                    type='text'
+                    placeholder='Enter First Name'
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className='inputBox'>
+                  <i aria-hidden className='fas fa-user-tie'></i>
+                  <input
+                    type='text'
+                    placeholder='Enter Last name'
+                    value={lastName}
+                    onChange={(e) => setlastName(e.target.value)}
+                    required
+                  />
+                </div>
+
                 <div className='inputBox'>
                   <i aria-hidden className='fas fa-envelope'></i>
                   <input
@@ -63,20 +85,18 @@ const Login = () => {
                   <input
                     type='password'
                     placeholder='Enter Your Password'
-                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    minLength={6}
+                    required
                   />
                 </div>
               </div>
-              <div className='loginButtonWrapper'>
-                <button type='submit' className='loginButton'>
-                  {loading ? 'Authenticating...' : 'Login'}
+              <div className='registerButtonWrapper'>
+                <button type='submit' className='registerButton'>
+                  {loading ? 'Loading...' : 'Register'}
                 </button>
               </div>
-              <p style={{ textDecoration: 'none' }} className='signup'>
-                New to Jobbee? <Link href='/register'>Create an account</Link>
-              </p>
             </form>
           </div>
         </div>
@@ -84,4 +104,4 @@ const Login = () => {
     </div>
   )
 }
-export default Login
+export default Register
