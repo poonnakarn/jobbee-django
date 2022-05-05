@@ -5,7 +5,7 @@ import Image from 'next/image'
 import AuthContext from '../../context/AuthContext'
 
 const Header = () => {
-  const { loading, user } = useContext(AuthContext)
+  const { loading, user, logout } = useContext(AuthContext)
 
   return (
     <div className='navWrapper'>
@@ -28,7 +28,7 @@ const Header = () => {
           {user ? (
             <div className='btn dropdown ml-3'>
               <a
-                className='btn dropdown-toggle mr-4'
+                className='dropdown-toggle mr-4'
                 id='dropDownMenuButton'
                 data-toggle='dropdown'
                 aria-haspopup='true'
@@ -53,7 +53,12 @@ const Header = () => {
                   <button className='dropdown-item'>Upload Resume</button>
                 </Link>
                 <Link href='/'>
-                  <button className='dropdown-item text-danger'>Logout</button>
+                  <button
+                    className='dropdown-item text-danger'
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
                 </Link>
               </div>
             </div>
