@@ -43,6 +43,31 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Register User
+  const register = async ({ firstName, lastName, email, password }) => {
+    try {
+      setLoading(true)
+
+      const res = await axios.post(`${process.env.API_URL}/api/register`, {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+      }) // POST method to backend of nextjs
+
+      if (res.data.username) {
+        setLoading(false)
+        router.push('/login')
+      }
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
   // Load User
   const loadUser = async () => {
     try {
@@ -88,6 +113,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const clearError = () => {
+    setError(null)
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -98,6 +127,8 @@ export const AuthProvider = ({ children }) => {
         login,
         setError,
         logout,
+        register,
+        clearError,
       }}
     >
       {children}

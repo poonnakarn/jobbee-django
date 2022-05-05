@@ -9,7 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const { loading, error, isAuthenticated, login, setError } =
+  const { loading, error, isAuthenticated, login, setError, clearError } =
     useContext(AuthContext)
   const router = useRouter()
 
@@ -17,7 +17,7 @@ const Login = () => {
     if (error) {
       // console.log(error)
       toast.error(error)
-      setError(null)
+      clearError()
     }
 
     if (isAuthenticated && !loading) {
