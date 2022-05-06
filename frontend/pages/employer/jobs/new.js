@@ -6,7 +6,7 @@ import { isAuthenticatedUser } from '../../../utils/isAuthenticated'
 export default function JobsAppliedPage({ accessToken }) {
   return (
     <Layout title='Post a new Job'>
-      <NewJob jobs={accessToken} />
+      <NewJob accessToken={accessToken} />
     </Layout>
   )
 }

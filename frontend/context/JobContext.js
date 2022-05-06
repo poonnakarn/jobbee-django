@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { useRouter } from 'next/router'
 import { useState, createContext } from 'react'
 
 const JobContext = createContext()
@@ -10,8 +9,34 @@ export const JobProvider = ({ children }) => {
   const [updated, setUpdated] = useState(null)
   const [applied, setApplied] = useState(false)
   const [stats, setStats] = useState(null)
+  const [created, setCreated] = useState(null)
 
-  const router = useRouter()
+  // Create a new job
+  const newJob = async (data, accessToken) => {
+    setLoading(true)
+    try {
+      const res = await axios.post(
+        `${process.env.API_URL}/api/jobs/new/`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+
+      if (res.data) {
+        setLoading(false)
+        setCreated(true)
+      }
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
 
   // Apply to job
   const applyToJob = async (id, accessToken) => {
@@ -98,6 +123,9 @@ export const JobProvider = ({ children }) => {
         setUpdated,
         stats,
         updated,
+        newJob,
+        created,
+        setCreated,
       }}
     >
       {children}

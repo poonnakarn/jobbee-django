@@ -22,14 +22,20 @@ const NewJob = ({ accessToken }) => {
   const [positions, setPositions] = useState('')
   const [company, setCompany] = useState('')
 
-  const { clearError, error, loading } = useContext(JobContext)
+  const { clearError, error, loading, newJob, created, setCreated } =
+    useContext(JobContext)
 
   useEffect(() => {
     if (error) {
       toast.error(error)
       clearError()
     }
-  }, [error])
+
+    if (created) {
+      setCreated(false)
+      toast.success('Job Posted Successfully')
+    }
+  }, [error, created])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -47,9 +53,8 @@ const NewJob = ({ accessToken }) => {
       positions,
       company,
     }
-    console.log(data)
 
-    // newJob(data, accessToken)
+    newJob(data, accessToken)
   }
 
   return (
