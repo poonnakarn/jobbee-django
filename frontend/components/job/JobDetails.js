@@ -1,13 +1,24 @@
-import moment from 'moment'
+import { useEffect, useContext } from 'react'
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
-import { useEffect } from 'react'
+import moment from 'moment'
+
+import JobContext from '../../context/JobContext'
+import { toast } from 'react-toastify'
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
 
-const JobDetails = ({ job, candidates }) => {
+const JobDetails = ({ job, candidates, accessToken }) => {
+  const { applyToJob, applied, clearError, error, loading } =
+    useContext(JobContext)
+
   useEffect(() => {
     getMap()
-  }, [])
+
+    if (error) {
+      toast.error(error)
+      clearError()
+    }
+  }, [error])
 
   const getMap = async () => {
     const coordinates = job.point.split('(')[1].replace(')', '').split(' ')
@@ -21,6 +32,10 @@ const JobDetails = ({ job, candidates }) => {
 
     // Add marker on map
     new mapboxgl.Marker().setLngLat(coordinates).addTo(map)
+  }
+
+  const applyToJobHandler = () => {
+    applyToJob(job.id, accessToken)
   }
 
   return (
@@ -42,9 +57,24 @@ const JobDetails = ({ job, candidates }) => {
 
                 <div className='mt-3'>
                   <span>
-                    <button className='btn btn-primary px-4 py-2 apply-btn'>
-                      Apply Now
-                    </button>
+                    {loading ? (
+                      'Loading...'
+                    ) : applied ? (
+                      <button
+                        disabled
+                        className='btn btn-success px-4 py-2 apply-btn'
+                      >
+                        <i aria-hidden className='fas fa-check'></i>
+                        Applied
+                      </button>
+                    ) : (
+                      <button
+                        className='btn btn-primary px-4 py-2 apply-btn'
+                        onClick={applyToJobHandler}
+                      >
+                        Apply Now
+                      </button>
+                    )}
                     <span className='ml-4 text-success'>
                       <b>{candidates}</b> candidates has applied to this job.
                     </span>
