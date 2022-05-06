@@ -3,10 +3,10 @@ import UpdateProfile from '../../components/user/UpdateProfile'
 
 import { isAuthenticatedUser } from '../../utils/isAuthenticated'
 
-export default function UpdateProfilePage() {
+export default function UpdateProfilePage({ accessToken }) {
   return (
     <Layout title='Update Your Profile'>
-      <UpdateProfile />
+      <UpdateProfile accessToken={accessToken} />
     </Layout>
   )
 }
@@ -28,6 +28,6 @@ export async function getServerSideProps({ req }) {
   }
 
   return {
-    props: {},
+    props: { accessToken },
   }
 }
