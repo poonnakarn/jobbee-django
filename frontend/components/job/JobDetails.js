@@ -8,11 +8,13 @@ import { toast } from 'react-toastify'
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN
 
 const JobDetails = ({ job, candidates, accessToken }) => {
-  const { applyToJob, applied, clearError, error, loading } =
+  const { applyToJob, applied, clearError, error, loading, checkJobApplied } =
     useContext(JobContext)
 
   useEffect(() => {
     getMap()
+
+    checkJobApplied(job.id, accessToken)
 
     if (error) {
       toast.error(error)
@@ -37,6 +39,10 @@ const JobDetails = ({ job, candidates, accessToken }) => {
   const applyToJobHandler = () => {
     applyToJob(job.id, accessToken)
   }
+
+  const d1 = moment(job.lastDate)
+  const d2 = moment(Date.now())
+  const isLastDatePassed = d1.diff(d2, 'day') < 0
 
   return (
     <div className='job-details-wrapper'>
@@ -71,6 +77,7 @@ const JobDetails = ({ job, candidates, accessToken }) => {
                       <button
                         className='btn btn-primary px-4 py-2 apply-btn'
                         onClick={applyToJobHandler}
+                        disabled={isLastDatePassed}
                       >
                         Apply Now
                       </button>
@@ -153,14 +160,17 @@ const JobDetails = ({ job, candidates, accessToken }) => {
               <p>{job.lastDate.substring(0, 10)}</p>
             </div>
 
-            <div className='mt-5 p-0'>
-              <div className='alert alert-danger'>
-                <h5>Note:</h5>
-                You can no longer apply to this job. This job is expired. Last
-                date to apply for this job was: <b>15-2-2022</b>
-                <br /> Checkout others job on Jobbee.
+            {isLastDatePassed && (
+              <div className='mt-5 p-0'>
+                <div className='alert alert-danger'>
+                  <h5>Note:</h5>
+                  You can no longer apply to this job. This job is expired. Last
+                  date to apply for this job was:
+                  <b> {job.lastDate.substring(0, 10)}</b>
+                  <br /> Checkout others job on Jobbee.
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
