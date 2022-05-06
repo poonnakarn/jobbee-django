@@ -5,10 +5,11 @@ import { useState, createContext } from 'react'
 const JobContext = createContext()
 
 export const JobProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [updated, setUpdated] = useState(null)
   const [applied, setApplied] = useState(false)
+  const [stats, setStats] = useState(null)
 
   const router = useRouter()
 
@@ -63,6 +64,23 @@ export const JobProvider = ({ children }) => {
     }
   }
 
+  // Get topic stats
+  const getTopicStats = async (topic) => {
+    setLoading(true)
+    try {
+      const res = await axios.get(`${process.env.API_URL}/api/stats/${topic}/`)
+
+      setStats(res.data)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
   const clearError = () => {
     setError(null)
   }
@@ -76,7 +94,9 @@ export const JobProvider = ({ children }) => {
         clearError,
         error,
         loading,
+        getTopicStats,
         setUpdated,
+        stats,
         updated,
       }}
     >

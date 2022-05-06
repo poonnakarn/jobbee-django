@@ -6,7 +6,8 @@ import Loader from '../layout/Loader'
 
 function TopicStats() {
   const [topic, setTopic] = useState('')
-  const { clearError, error, loading } = useContext(JobContext)
+  const { clearError, error, loading, getTopicStats, stats } =
+    useContext(JobContext)
 
   useEffect(() => {
     if (error) {
@@ -17,7 +18,8 @@ function TopicStats() {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log(topic)
+    getTopicStats(topic)
+    console.log(stats)
   }
 
   return (
@@ -54,40 +56,46 @@ function TopicStats() {
           <div className='rightContentWrapper'>
             {loading ? (
               <Loader />
+            ) : stats && stats.message ? (
+              <div className='alert alert-danger'>
+                <b>{stats.message}</b>
+              </div>
             ) : (
-              <>
-                <h4>Stats of JAVA:</h4>
-                <table className='table table-striped mt-4'>
-                  <tbody>
-                    <tr>
-                      <th scope='row'>Average Positions</th>
-                      <td>2</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>Total Jobs</th>
-                      <td>5</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>Minimum Salary</th>
-                      <td>75000</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>Maximum Salary</th>
-                      <td>75000</td>
-                    </tr>
-                    <tr>
-                      <th scope='row'>Average Salary</th>
-                      <td>75000</td>
-                    </tr>
-                  </tbody>
-                </table>
+              stats && (
+                <>
+                  <h4>Stats of {topic.toUpperCase()}:</h4>
+                  <table className='table table-striped mt-4'>
+                    <tbody>
+                      <tr>
+                        <th scope='row'>Average Positions</th>
+                        <td>{stats.avg_positions}</td>
+                      </tr>
+                      <tr>
+                        <th scope='row'>Total Jobs</th>
+                        <td>{stats.total_jobs}</td>
+                      </tr>
+                      <tr>
+                        <th scope='row'>Minimum Salary</th>
+                        <td>${stats.min_salary}</td>
+                      </tr>
+                      <tr>
+                        <th scope='row'>Maximum Salary</th>
+                        <td>${stats.max_salary}</td>
+                      </tr>
+                      <tr>
+                        <th scope='row'>Average Salary</th>
+                        <td>${stats.avg_salary}</td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                <div className='alert alert-danger mt-4'>
-                  <b>Note:</b> These stats are collected from the jobs that are
-                  posted only on Jobbee. Do not compare these stats with other
-                  sites.
-                </div>
-              </>
+                  <div className='alert alert-danger mt-4'>
+                    <b>Note:</b> These stats are collected from the jobs that
+                    are posted only on Jobbee. Do not compare these stats with
+                    other sites.
+                  </div>
+                </>
+              )
             )}
           </div>
         </div>
