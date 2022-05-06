@@ -10,6 +10,7 @@ export const JobProvider = ({ children }) => {
   const [applied, setApplied] = useState(false)
   const [stats, setStats] = useState(null)
   const [created, setCreated] = useState(null)
+  const [deleted, setDeleted] = useState(null)
 
   // Create a new job
   const newJob = async (data, accessToken) => {
@@ -92,6 +93,30 @@ export const JobProvider = ({ children }) => {
     }
   }
 
+  // Apply to job
+  const deleteJob = async (id, accessToken) => {
+    setLoading(true)
+    try {
+      const res = await axios.delete(
+        `${process.env.API_URL}/api/jobs/${id}/delete/`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+
+      setLoading(false)
+      setDeleted(true)
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
   // Check job applied
   const checkJobApplied = async (id, accessToken) => {
     setLoading(true)
@@ -154,6 +179,9 @@ export const JobProvider = ({ children }) => {
         stats,
         updated,
         updateJob,
+        deleteJob,
+        deleted,
+        setDeleted,
       }}
     >
       {children}
