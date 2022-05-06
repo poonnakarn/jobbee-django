@@ -80,7 +80,7 @@ def update_job(request, pk):
     job.industry = request.data["industry"]
     job.experience = request.data["experience"]
     job.salary = request.data["salary"]
-    job.position = request.data["position"]
+    job.positions = request.data["positions"]
     job.company = request.data["company"]
 
     job.save()

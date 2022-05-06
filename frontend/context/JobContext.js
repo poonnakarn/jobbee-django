@@ -65,6 +65,33 @@ export const JobProvider = ({ children }) => {
     }
   }
 
+  // Update to job
+  const updateJob = async (id, data, accessToken) => {
+    setLoading(true)
+    try {
+      const res = await axios.put(
+        `${process.env.API_URL}/api/jobs/${id}/update/`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+
+      if (res.data) {
+        setUpdated(true)
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
   // Check job applied
   const checkJobApplied = async (id, accessToken) => {
     setLoading(true)
@@ -117,15 +144,16 @@ export const JobProvider = ({ children }) => {
         applyToJob,
         checkJobApplied,
         clearError,
+        created,
         error,
-        loading,
         getTopicStats,
+        loading,
+        newJob,
+        setCreated,
         setUpdated,
         stats,
         updated,
-        newJob,
-        created,
-        setCreated,
+        updateJob,
       }}
     >
       {children}

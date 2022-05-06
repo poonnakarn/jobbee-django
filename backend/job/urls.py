@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("jobs/", views.get_all_jobs, name="jobs"),
-    path("jobs/<int:pk>", views.get_job, name="job"),
+    path("jobs/<int:pk>/", views.get_job, name="job"),
     path("jobs/new/", views.new_job, name="new_job"),
     path("jobs/<int:pk>/update/", views.update_job, name="update_job"),
     path("jobs/<int:pk>/delete/", views.delete_job, name="delete_job"),
