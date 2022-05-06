@@ -20,7 +20,7 @@ const Header = () => {
           </div>
         </Link>
         <div className='btnsWrapper'>
-          <Link href='/employeer/jobs/new'>
+          <Link href='/employer/jobs/new'>
             <button className='postAJobButton'>
               <span>Post A Job</span>
             </button>
