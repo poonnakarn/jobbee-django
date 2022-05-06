@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [error, setError] = useState(null)
   const [updated, setUpdated] = useState(null)
+  const [uploaded, setUploaded] = useState(null)
 
   const router = useRouter()
 
@@ -153,6 +154,34 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Upload Resume
+  const uploadResume = async (formData, accessToken) => {
+    try {
+      setLoading(true)
+
+      const res = await axios.put(
+        `${process.env.API_URL}/api/upload/resume/`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+
+      if (res.data) {
+        setLoading(false)
+        setUploaded(true)
+      }
+    } catch (error) {
+      setLoading(false)
+      setError(
+        error.response &&
+          (error.response.data.detail || error.response.data.error)
+      )
+    }
+  }
+
   const clearError = () => {
     setError(null)
   }
@@ -160,18 +189,21 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        loading,
-        user,
+        clearError,
         error,
         isAuthenticated,
+        loading,
         login,
-        setError,
         logout,
         register,
-        clearError,
+        setError,
+        setUpdated,
+        setUploaded,
         updated,
         updateProfile,
-        setUpdated,
+        uploaded,
+        uploadResume,
+        user,
       }}
     >
       {children}
