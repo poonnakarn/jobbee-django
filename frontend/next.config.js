@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     // API_URL: 'http://localhost:8000',
-    API_URL: 'https://jobbee-project.herokuapp.com/',
+    API_URL: 'https://jobbee-project.herokuapp.com',
     MAPBOX_ACCESS_TOKEN:
       'pk.eyJ1IjoicG9vbm5ha2FybiIsImEiOiJjbDJvZm11bDgxMTlsM2lydWxxenloaHJmIn0.__OVxGxLMvPUn1kDdB5UEQ',
   },
